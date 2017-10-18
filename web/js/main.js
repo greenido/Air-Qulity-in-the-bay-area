@@ -29,7 +29,8 @@ var title = svg.getElementsByClassName("gauge_rating")[0];
 //
 $(document).ready(function() {
   console.log("== start the party");
-  geoLoc();
+  //geoLoc();
+  getAQI(94024);
 });
 
 //
