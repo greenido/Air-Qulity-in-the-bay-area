@@ -1,0 +1,36 @@
+{
+  "name": "The Green Air Qulity Index",
+  "short_name": "The Green AQI",
+  "icons": [{
+        "src": "img/pencil-128.png",
+        "type": "image/png",
+        "sizes": "128x128"
+      }, {
+        "src": "img/pencil-150.png",
+        "type": "image/png",
+        "sizes": "150x150"
+      }, {
+        "src": "img/pencil-144.png",
+        "type": "image/png",
+        "sizes": "144x144"
+      }, {
+        "src": "img/pencil-192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "img/pencil-256.png",
+        "type": "image/png",
+        "sizes": "256x256"
+      },
+      {
+        "src": "img/pencil-512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }],
+  "start_url": "/?homescreen=1",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#101010",
+  "theme_color": "#2196F3"
+}
