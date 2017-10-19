@@ -1,7 +1,7 @@
 ## Overview
 
 The goal of this project is to build a (demo) app that show the air quality index both on the web and as an 'Action on Google'.
-<img src="https://raw.githubusercontent.com/greenido/Air-Qulity-in-the-bay-area/master/web/img/aqi-Nexus6P.png" alt="aqi on nexus6" style="hieght: 350px;"/>
+<img src="https://raw.githubusercontent.com/greenido/Air-Qulity-in-the-bay-area/master/web/img/aqi-Nexus6P.png" alt="aqi on nexus6" style="height: 350px;"/>
 
 #### Live version: https://aqi-sf.herokuapp.com/
 -----
