@@ -71,6 +71,14 @@ function processMessage($update) {
             "displayText" => $tmpStr
         ));
     }
+    else {
+      // Say good bye!
+      sendMessage(array(
+        "source" => "aqi-webhook",
+        "speech" => "Have a wonderful day!",
+        "displayText" => "Have a wonderful day!"
+      ));
+    }
 }
 
 //
@@ -135,7 +143,7 @@ if (isset($update["result"]["action"])) {
 } else {
     error_log("\nError: $update \n");
     // A simple 'error msg' that will guide the user to provide something that we can work with
-    echo '{ "speech": "Sorry but I did not understand. Try: What is the air quality?",
+    echo '{ "speech": "Sorry but I did not understand. Try: What is the air quality in South Central Bay?",
     "source": "eth-price-sample",
-    "displayText": "Sorry but I did not understand. Try: What is the air quality?" }';
+    "displayText": "Sorry but I did not understand. Try: What is the air quality in South Central Bay?" }';
 }
