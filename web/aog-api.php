@@ -27,6 +27,28 @@ function getAQIFromPage($htmlData, $zone) {
     return -1;
 }
 
+/**
+ * return the term of the range out of the aqi index number
+ */
+function getAQITerm($airInx) {
+    if ($airInx >= 0 && $airInx <= 50) {
+        return "Good";
+    }
+    elseif ($airInx > 50 && $airInx <= 100) {
+        return "Moderate";
+    }
+    elseif ($airInx > 100 && $airInx <= 150) {
+        return "Unhealthy for Sensitive Groups";
+    }
+    elseif ($airInx > 150 && $airInx <= 200) {
+        return "Unhealthy";
+    }
+    elseif ($airInx > 200 ) {
+        return "Very Unhealthy";
+    }
+    return "";
+}
+
 //
 // Entry point to all the different request that this webhook will get
 //
@@ -41,11 +63,7 @@ function processMessage($update) {
         return "N/A";
     }
 
-//    $inx1 = strpos($htmlData, 'South Central Bay');
-//    $inx2 = strpos($htmlData, 'ftemp', $inx1 + 8) + 9;
-//    $inx3 = strpos($htmlData, '<', $inx2);
-//    $airInx = substr($htmlData, $inx2, ($inx3 - $inx2));
-
+    // getting the aqi for all the 5 locations
     $airInxNorth = getAQIFromPage($htmlData, 'North Counties');
     $airInxCoast = getAQIFromPage($htmlData, 'Coast and Central Bay');
     $airInxEastern = getAQIFromPage($htmlData, 'Eastern District');
@@ -57,15 +75,20 @@ function processMessage($update) {
         error_log(" Working on $zone ");
         $tmpStr = "Sorry! I could not find the air quality index for $zone. Try again later.";
         if (strpos($zone, "north") > -1) {
-            $tmpStr = "The North Counties Air Quality Index is {$airInxNorth}. Do you wish to check another location or good bye?";
+            $aqiStr = getAQITerm($airInxNorth);
+            $tmpStr = "The North Counties Air Quality Index is {$airInxNorth} which is {$aqiStr}. Do you wish to check another location or good bye?";
         } elseif (strpos($zone, "coast") > -1) {
-            $tmpStr = "The Coast and Central Bay Air Quality Index is {$airInxCoast}. Do you wish to check another location or good bye?";
+            $aqiStr = getAQITerm($airInxCoast);
+            $tmpStr = "The Coast and Central Bay Air Quality Index is {$airInxCoast} which is {$aqiStr}. Do you wish to check another location or good bye?";
         } elseif (strpos($zone, "eastern") > -1) {
-            $tmpStr = "The Eastern District Air Quality Index is {$airInxEastern}. Do you wish to check another location or good bye?";
+            $aqiStr = getAQITerm($airInxEastern);
+            $tmpStr = "The Eastern District Air Quality Index is {$airInxEastern} which is {$aqiStr}. Do you wish to check another location or good bye?";
         } elseif (strpos($zone, "south") > -1) {
-            $tmpStr = "The South Central Bay Air Quality Index is {$airInxSouth}. Do you wish to check another location or good bye?";
+            $aqiStr = getAQITerm($airInxSouth);
+            $tmpStr = "The South Central Bay Air Quality Index is {$airInxSouth} which is {$aqiStr}. Do you wish to check another location or good bye?";
         } elseif (strpos($zone, "santa") > -1) {
-            $tmpStr = "The Santa Clara Valley Air Quality Index is {$airInxSanta}. Do you wish to check another location or good bye?";
+            $aqiStr = getAQITerm($airInxSanta);
+            $tmpStr = "The Santa Clara Valley Air Quality Index is {$airInxSanta} which is {$aqiStr}. Do you wish to check another location or good bye?";
         }
 
         sendMessage(array(
