@@ -120,6 +120,7 @@ function sendMessage($parameters) {
 //
 // Start the party. Get the $_POST data and work with it.
 //
+$startTime = time();
 $response = file_get_contents("php://input");
 error_log("\n== STARTING and Got: $response \n\n");
 $update = json_decode($response, true);
@@ -132,6 +133,9 @@ if (isset($update["result"]["action"])) {
     "source": "aqi-bay-area-webhook",
     "displayText": "Sorry but I did not understand. Try: What is the air quality in South Central Bay?" }';
 }
+$endTime = time();
+error_log("-P- Took: " . ($endTime - $startTime) . "ms to return an answer");
+
 
 /* TESTING case
 $testJSON = '{
