@@ -53,7 +53,7 @@ function processMessage($update) {
         $zone = strtolower($update["result"]["parameters"]["zones"]);
         error_log(" Working on $zone ");
         $tmpStr = "Sorry! I could not find the air quality index for $zone. Try again later.";
-        if (strpos($zone, "north") > -1 || strpos($zone, "calistoga")) {
+        if (strpos($zone, "north") > -1) {
             $tmpStr = "The North Counties Air Quality Index is {$airInxNorth}. Do you wish to check another location or good bye?";
         } elseif (strpos($zone, "coast") > -1) {
             $tmpStr = "The Coast and Central Bay Air Quality Index is {$airInxCoast}. Do you wish to check another location or good bye?";
