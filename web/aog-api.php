@@ -37,35 +37,34 @@ function processMessage($update) {
         Ïerror_log("Could not get the html data");
         return "N/A";
     }
-    
+
 //    $inx1 = strpos($htmlData, 'South Central Bay');
 //    $inx2 = strpos($htmlData, 'ftemp', $inx1 + 8) + 9;
 //    $inx3 = strpos($htmlData, '<', $inx2);
 //    $airInx = substr($htmlData, $inx2, ($inx3 - $inx2));
-    
+
     $airInxNorth = getAQIFromPage($htmlData, 'North Counties');
     $airInxCoast = getAQIFromPage($htmlData, 'Coast and Central Bay');
     $airInxEastern = getAQIFromPage($htmlData, 'Eastern District');
     $airInxSouth = getAQIFromPage($htmlData, 'South Central Bay');
     $airInxSanta = getAQIFromPage($htmlData, 'Santa Clara Valley');
-    
+
     if ($update["result"]["action"] === "air-quality-in-zone") {
         $zone = $update["result"]["parameters"]["zones"];
         error_log(" Working on $zone ");
-        $tmpStr = "The North Counties Air Quality Index is {$airInxNorth}. Do you wish to check another location or good bye?";
-        if (strpos($zone, "coast") > -1) {
+        $tmpStr = "Sorry! I could not find the air quality index for $zone. Try again later.";
+        if (strpos($zone, "north") > -1) {
+            $tmpStr = "The North Counties Air Quality Index is {$airInxNorth}. Do you wish to check another location or good bye?";
+        } elseif (strpos($zone, "coast") > -1) {
             $tmpStr = "The Coast and Central Bay Air Quality Index is {$airInxCoast}. Do you wish to check another location or good bye?";
-        }
-        elseif (strpos($zone, "eastern") > -1) {
+        } elseif (strpos($zone, "eastern") > -1) {
             $tmpStr = "The Eastern District Air Quality Index is {$airInxEastern}. Do you wish to check another location or good bye?";
-        }
-        elseif (strpos($zone, "south") > -1) {
+        } elseif (strpos($zone, "south") > -1) {
             $tmpStr = "The South Central Bay Air Quality Index is {$airInxSouth}. Do you wish to check another location or good bye?";
-        }
-        elseif (strpos($zone, "santa") > -1) {
+        } elseif (strpos($zone, "santa") > -1) {
             $tmpStr = "The Santa Clara Valley Air Quality Index is {$airInxSanta}. Do you wish to check another location or good bye?";
         }
-        
+
         sendMessage(array(
             "source" => "aqi-webhook",
             "speech" => $tmpStr,
@@ -87,7 +86,7 @@ function sendMessage($parameters) {
 //
 // Start the party. Get the $_POST data and work with it.
 //
-//$response = file_get_contents("php://input");
+$response = file_get_contents("php://input");
 
 $testJSON = '{
   "id": "2ffce933-c055-426f-9ff8-cc43d2d2e291",
@@ -127,7 +126,7 @@ $testJSON = '{
   "sessionId": "310a406c-17d4-4268-8f0f-12e6baea6918"
 }';
 
-$response = $testJSON;
+//$response = $testJSON;
 
 error_log("\n== STARTING and Got: $response \n\n");
 $update = json_decode($response, true);
