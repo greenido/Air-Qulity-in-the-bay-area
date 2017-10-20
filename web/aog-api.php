@@ -76,19 +76,19 @@ function processMessage($update) {
         $tmpStr = "Sorry! I could not find the air quality index for $zone. Try again later.";
         if (strpos($zone, "north") > -1) {
             $aqiStr = getAQITerm($airInxNorth);
-            $tmpStr = "The North Counties Air Quality Index is {$airInxNorth} which is {$aqiStr}. Do you wish to check another location or good bye?";
+            $tmpStr = "The North Counties Air Quality Index is {$airInxNorth} which is {$aqiStr}. Do you wish to check another location or shell we say bye bye?";
         } elseif (strpos($zone, "coast") > -1) {
             $aqiStr = getAQITerm($airInxCoast);
-            $tmpStr = "The Coast and Central Bay Air Quality Index is {$airInxCoast} which is {$aqiStr}. Do you wish to check another location or good bye?";
+            $tmpStr = "The Coast and Central Bay Air Quality Index is {$airInxCoast} which is {$aqiStr}. Do you wish to check another location or shell we say bye?";
         } elseif (strpos($zone, "eastern") > -1) {
             $aqiStr = getAQITerm($airInxEastern);
-            $tmpStr = "The Eastern District Air Quality Index is {$airInxEastern} which is {$aqiStr}. Do you wish to check another location or good bye?";
+            $tmpStr = "The Eastern District Air Quality Index is {$airInxEastern} which is {$aqiStr}. Do you wish to check another location or shell we say see you later?";
         } elseif (strpos($zone, "south") > -1) {
             $aqiStr = getAQITerm($airInxSouth);
-            $tmpStr = "The South Central Bay Air Quality Index is {$airInxSouth} which is {$aqiStr}. Do you wish to check another location or good bye?";
+            $tmpStr = "The South Central Bay Air Quality Index is {$airInxSouth} which is {$aqiStr}. Do you wish to check another location or shell we say see around?";
         } elseif (strpos($zone, "santa") > -1) {
             $aqiStr = getAQITerm($airInxSanta);
-            $tmpStr = "The Santa Clara Valley Air Quality Index is {$airInxSanta} which is {$aqiStr}. Do you wish to check another location or good bye?";
+            $tmpStr = "The Santa Clara Valley Air Quality Index is {$airInxSanta} which is {$aqiStr}. Do you wish to check another location or shell we say good bye?";
         }
 
         sendMessage(array(
