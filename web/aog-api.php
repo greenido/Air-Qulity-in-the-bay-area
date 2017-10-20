@@ -33,42 +33,100 @@ function getAQIFromPage($htmlData, $zone) {
 function getAQITerm($airInx) {
     if ($airInx >= 0 && $airInx <= 50) {
         return "Good";
-    }
-    elseif ($airInx > 50 && $airInx <= 100) {
+    } elseif ($airInx > 50 && $airInx <= 100) {
         return "Moderate";
-    }
-    elseif ($airInx > 100 && $airInx <= 150) {
+    } elseif ($airInx > 100 && $airInx <= 150) {
         return "Unhealthy for Sensitive Groups";
-    }
-    elseif ($airInx > 150 && $airInx <= 200) {
+    } elseif ($airInx > 150 && $airInx <= 200) {
         return "Unhealthy";
-    }
-    elseif ($airInx > 200 ) {
+    } elseif ($airInx > 200) {
         return "Very Unhealthy";
     }
     return "";
+}
+
+/**
+ * Util function to cache the air data on disk
+ * @param type $airDataObj
+ */
+function writeToFile($airDataObj) {
+    $tDataSer = serialize($airDataObj);
+    $filePath = getcwd() . DIRECTORY_SEPARATOR . "airDataCache.txt";
+    
+    if (is_writable($filePath)) {
+        $fp = fopen($filePath, "w");
+        fwrite($fp, $tDataSer);
+        fclose($fp);
+        error_log("Updated cache file: $filePath with data: " + $tDataSer);
+    }
+}
+
+/**
+ * util function to read cache data from disk
+ */
+function readFromFile() {
+    $filePath = getcwd() . DIRECTORY_SEPARATOR . "airDataCache.txt";
+    if (file_exists($filePath)) {
+        $objData = file_get_contents($filePath);
+        $obj = unserialize($objData);
+        if (!empty($obj)) {
+            $currentTime = time();
+            $lastUpdated = $obj->updated;
+            if (($currentTime - $lastUpdated) > 3600) {
+                /// Older than 1 hour
+                return NULL;
+            } else {
+                return $obj;
+            }
+        }
+    } else {
+        error_log("* No cache file");
+    }
 }
 
 //
 // Entry point to all the different request that this webhook will get
 //
 function processMessage($update) {
+    $airObj = readFromFile();
+    $airInxNorth = 0;
+    $airInxCoast = 0;
+    $airInxEastern = 0;
+    $airInxSouth = 0;
+    $airInxSanta = 0;
 
-    $htmlPage = "http://sparetheair.org/stay-informed/todays-air-quality/five-day-forecast";
-    $htmlData = file_get_contents($htmlPage);
-    //error_log("====\n" . $htmlData . "\n=========\n");
+    if (isset($airObj)) {
+        $airInxNorth = $airObj->north;
+        $airInxCoast = $airObj->coast;
+        $airInxEastern = $airObj->east;
+        $airInxSouth = $airObj->south;
+        $airInxSanta = $airObj->santa;
+        error_log("Got from cache all the info");
+    } else {
+        $htmlPage = "http://sparetheair.org/stay-informed/todays-air-quality/five-day-forecast";
+        $htmlData = file_get_contents($htmlPage);
+        //error_log("====\n" . $htmlData . "\n=========\n");
+        if (!isset($htmlData)) {
+            error_log("Could not get the html data");
+            return "N/A";
+        }
+        // getting the aqi for all the 5 locations
+        $airInxNorth = getAQIFromPage($htmlData, 'North Counties');
+        $airInxCoast = getAQIFromPage($htmlData, 'Coast and Central Bay');
+        $airInxEastern = getAQIFromPage($htmlData, 'Eastern District');
+        $airInxSouth = getAQIFromPage($htmlData, 'South Central Bay');
+        $airInxSanta = getAQIFromPage($htmlData, 'Santa Clara Valley');
 
-    if (!isset($htmlData)) {
-        Ïerror_log("Could not get the html data");
-        return "N/A";
+        // build an job to save a cache
+        $tData = new stdClass();
+        $tData->updated = time();
+        $tData->north = $airInxNorth;
+        $tData->coast = $airInxCoast;
+        $tData->east = $airInxEastern;
+        $tData->south = $airInxSouth;
+        $tData->santa = $airInxSanta;
+        writeToFile($tData);
     }
-
-    // getting the aqi for all the 5 locations
-    $airInxNorth = getAQIFromPage($htmlData, 'North Counties');
-    $airInxCoast = getAQIFromPage($htmlData, 'Coast and Central Bay');
-    $airInxEastern = getAQIFromPage($htmlData, 'Eastern District');
-    $airInxSouth = getAQIFromPage($htmlData, 'South Central Bay');
-    $airInxSanta = getAQIFromPage($htmlData, 'Santa Clara Valley');
 
     if ($update["result"]["action"] === "air-quality-in-zone") {
         $zone = strtolower($update["result"]["parameters"]["zones"]);
@@ -96,14 +154,13 @@ function processMessage($update) {
             "speech" => $tmpStr,
             "displayText" => $tmpStr
         ));
-    }
-    else {
-      // Say good bye!
-      sendMessage(array(
-        "source" => "aqi-webhook",
-        "speech" => "Have a wonderful day!",
-        "displayText" => "Have a wonderful day!"
-      ));
+    } else {
+        // Say good bye!
+        sendMessage(array(
+            "source" => "aqi-webhook",
+            "speech" => "Have a wonderful day!",
+            "displayText" => "Have a wonderful day!"
+        ));
     }
 }
 
@@ -120,7 +177,47 @@ function sendMessage($parameters) {
 //
 // Start the party. Get the $_POST data and work with it.
 //
-$response = file_get_contents("php://input");
+$startTime = time();
+$testJSON = '{
+      "id": "2ffce933-c055-426f-9ff8-cc43d2d2e291",
+      "timestamp": "2017-10-20T04:47:07.129Z",
+      "lang": "en",
+      "result": {
+      "source": "agent",
+      "resolvedQuery": "air in the north?",
+      "action": "air-quality-in-zone",
+      "actionIncomplete": false,
+      "parameters": {
+      "zones": "northern zone"
+      },
+      "contexts": [],
+      "metadata": {
+      "intentId": "bcd8c286-f2c2-43de-8436-2f3552ccf697",
+      "webhookUsed": "false",
+      "webhookForSlotFillingUsed": "false",
+      "intentName": "air-quality-in-zone"
+      },
+      "fulfillment": {
+      "speech": "",
+      "messages": [
+      {
+      "type": 0,
+      "id": "75db4b39-106f-405e-9724-60c58ad6d750",
+      "speech": ""
+      }
+      ]
+      },
+      "score": 0.949999988079071
+      },
+      "status": {
+      "code": 200,
+      "errorType": "success"
+      },
+      "sessionId": "310a406c-17d4-4268-8f0f-12e6baea6918"
+      }';
+
+$response = $testJSON;
+//$response = file_get_contents("php://input");
 error_log("\n== STARTING and Got: $response \n\n");
 $update = json_decode($response, true);
 if (isset($update["result"]["action"])) {
@@ -132,46 +229,13 @@ if (isset($update["result"]["action"])) {
     "source": "aqi-bay-area-webhook",
     "displayText": "Sorry but I did not understand. Try: What is the air quality in South Central Bay?" }';
 }
+$endTime = time();
+error_log("-P- Took: " . ($endTime - $startTime) . "ms to return an answer");
 
-/* TESTING case
-$testJSON = '{
-  "id": "2ffce933-c055-426f-9ff8-cc43d2d2e291",
-  "timestamp": "2017-10-20T04:47:07.129Z",
-  "lang": "en",
-  "result": {
-    "source": "agent",
-    "resolvedQuery": "air in the north?",
-    "action": "air-quality-in-zone",
-    "actionIncomplete": false,
-    "parameters": {
-      "zones": "northern zone"
-    },
-    "contexts": [],
-    "metadata": {
-      "intentId": "bcd8c286-f2c2-43de-8436-2f3552ccf697",
-      "webhookUsed": "false",
-      "webhookForSlotFillingUsed": "false",
-      "intentName": "air-quality-in-zone"
-    },
-    "fulfillment": {
-      "speech": "",
-      "messages": [
-        {
-          "type": 0,
-          "id": "75db4b39-106f-405e-9724-60c58ad6d750",
-          "speech": ""
-        }
-      ]
-    },
-    "score": 0.949999988079071
-  },
-  "status": {
-    "code": 200,
-    "errorType": "success"
-  },
-  "sessionId": "310a406c-17d4-4268-8f0f-12e6baea6918"
-}';
 
-//$response = $testJSON;
 
-*/
+/* 
+     * TESTING case:
+      
+
+     */    
