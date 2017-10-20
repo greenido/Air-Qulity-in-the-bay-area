@@ -87,7 +87,7 @@ function getAQI(zipcode) {
     }
     
     var inx1 = htmlData.indexOf('South Central Bay');
-    var inx2 = htmlData.indexOf('ftemp-y', inx1 + 10) + 9;
+    var inx2 = htmlData.indexOf('ftemp', inx1 + 8) + 9;
     var inx3 = htmlData.indexOf('<', inx2);
     var airInx = htmlData.substr(inx2 , (inx3-inx2));
     console.log(" air index: " + airInx);
