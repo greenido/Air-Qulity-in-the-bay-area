@@ -85,7 +85,7 @@ function processMessage($update) {
             $tmpStr = "The Eastern District Air Quality Index is {$airInxEastern} which is {$aqiStr}. Do you wish to check another location or shell we say see you later?";
         } elseif (strpos($zone, "south") > -1) {
             $aqiStr = getAQITerm($airInxSouth);
-            $tmpStr = "The South Central Bay Air Quality Index is {$airInxSouth} which is {$aqiStr}. Do you wish to check another location or shell we say see around?";
+            $tmpStr = "The South Central Bay Air Quality Index is {$airInxSouth} which is {$aqiStr}. Do you wish to check another location or shell we say see you around?";
         } elseif (strpos($zone, "santa") > -1) {
             $aqiStr = getAQITerm($airInxSanta);
             $tmpStr = "The Santa Clara Valley Air Quality Index is {$airInxSanta} which is {$aqiStr}. Do you wish to check another location or shell we say good bye?";
@@ -121,7 +121,19 @@ function sendMessage($parameters) {
 // Start the party. Get the $_POST data and work with it.
 //
 $response = file_get_contents("php://input");
+error_log("\n== STARTING and Got: $response \n\n");
+$update = json_decode($response, true);
+if (isset($update["result"]["action"])) {
+    processMessage($update);
+} else {
+    error_log("\nError: $update \n");
+    // A simple 'error msg' that will guide the user to provide something that we can work with
+    echo '{ "speech": "Sorry but I did not understand. Try: What is the air quality in South Central Bay?",
+    "source": "aqi-bay-area-webhook",
+    "displayText": "Sorry but I did not understand. Try: What is the air quality in South Central Bay?" }';
+}
 
+/* TESTING case
 $testJSON = '{
   "id": "2ffce933-c055-426f-9ff8-cc43d2d2e291",
   "timestamp": "2017-10-20T04:47:07.129Z",
@@ -162,14 +174,4 @@ $testJSON = '{
 
 //$response = $testJSON;
 
-error_log("\n== STARTING and Got: $response \n\n");
-$update = json_decode($response, true);
-if (isset($update["result"]["action"])) {
-    processMessage($update);
-} else {
-    error_log("\nError: $update \n");
-    // A simple 'error msg' that will guide the user to provide something that we can work with
-    echo '{ "speech": "Sorry but I did not understand. Try: What is the air quality in South Central Bay?",
-    "source": "aqi-bay-area-webhook",
-    "displayText": "Sorry but I did not understand. Try: What is the air quality in South Central Bay?" }';
-}
+*/
