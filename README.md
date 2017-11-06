@@ -5,10 +5,9 @@ The goal of this project is to build a (demo) app that show the air quality inde
 * Action on Google.
 
 #### Live version: 
-<iframe width="350" height="430" src="https://console.dialogflow.com/api-client/demo/embedded/aqi-bayarea"></iframe>
-https://aqi-sf.herokuapp.com/
+https://aqi-sf.herokuapp.com/ OR https://t.me/air_quality_bayarea_bot
 
-<img src="https://raw.githubusercontent.com/greenido/Air-Qulity-in-the-bay-area/master/web/img/aqi-Nexus6P.png" alt="aqi on nexus6" height="850px"/>
+<img src="https://raw.githubusercontent.com/greenido/Air-Qulity-in-the-bay-area/master/web/img/aqi-Nexus6P.png" alt="aqi on nexus6" height="650px"/>
 
 -----
 
