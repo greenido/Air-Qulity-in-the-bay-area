@@ -1,0 +1,22 @@
+{
+  "name": "air-quality-index-alexa-skill",
+  "version": "0.1.1",
+  "description": "An example Alexa Skill project that gets the air quality index for the Bay Area",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "alexa",
+    "amazon",
+    "echo",
+    "skills"
+  ],
+  "author": "Ido Green | @greenido",
+  "license": "MIT",
+  "dependencies": {
+    "alexa-app": "^4.2.0",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2"
+  }
+}
