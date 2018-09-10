@@ -1,6 +1,6 @@
 ## Overview
 
-The goal of this project is give you (=the runner) an app that shows the air quality index for the Bay Area (CA).
+The goal of this project is give you (=the runner) an easy way to check the air quality before your next training. It's working for the Bay Area (CA).
 You can get this information in 3 ways:
 
 * [The web](https://aqi-sf.herokuapp.com/)
