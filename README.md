@@ -1,10 +1,13 @@
 ## Overview
 
-The goal of this project is to build a (demo) app that show the air quality index both:
-* The web
-* Action on Google.
+The goal of this project is give you (=the runner) an app that shows the air quality index for the Bay Area (CA).
+You can get this information in 3 ways:
 
-#### Live version: 
+* [The web](https://aqi-sf.herokuapp.com/)
+* [Action on Google](https://assistant.google.com/services/a/id/3212879d07a21442/) - "Hey Google, talk to Bay Area Air Quality"
+* [Telegram](https://t.me/air_quality_bayarea_bot)
+
+#### Live versions: 
 https://aqi-sf.herokuapp.com/ OR https://t.me/air_quality_bayarea_bot
 
 <img src="https://raw.githubusercontent.com/greenido/Air-Qulity-in-the-bay-area/master/web/img/aqi-Nexus6P.png" alt="aqi on nexus6" height="650px"/>
