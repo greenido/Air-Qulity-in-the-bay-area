@@ -7,7 +7,7 @@
  * @see 
  * 1. reporting zones: http://sparetheair.org/stay-informed/todays-air-quality/reporting-zones
  * 2. http://sparetheair.org/stay-informed/todays-air-quality/five-day-forecast
- * 3. TODO: post on the topic - https://greenido.wordpress.com
+ * 3. Done: post on the topic - https://greenido.wordpress.com
  */
 
 /**
