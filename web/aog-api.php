@@ -16,11 +16,12 @@
  * @param type $zone - e.g. South Central Bay
  */
 function getAQIFromPage($htmlData, $zone) {
-    $inx1 = strpos($htmlData, $zone);
-    $inx2 = strpos($htmlData, 'ftemp', $inx1 + 8) + 9;
-    $inx3 = strpos($htmlData, '<', $inx2);
-    $airInx = substr($htmlData, $inx2, ($inx3 - $inx2));
-    error_log("(!) Air index for $zone: " + $airInx);
+    $inx1 = strrpos($htmlData, $zone);
+    $inx2 = strpos($htmlData, 'air-condition-data-panel', $inx1 + 8) + 9;
+    $inx22 = strpos($htmlData, 'panel__4">', $inx2+4) + 10;
+    $inx3 = strpos($htmlData, '<', $inx22);
+    $airInx = substr($htmlData, $inx22, ($inx3 - $inx22));
+    error_log("(!) Air index for $zone: " . $airInx);
     if (is_numeric($airInx)) {
         return $airInx;
     }
@@ -64,9 +65,9 @@ function processMessage($update) {
     }
 
     // getting the aqi for all the 5 locations
-    $airInxNorth = getAQIFromPage($htmlData, 'North Counties');
+    $airInxNorth = getAQIFromPage($htmlData, 'Northern Zone');
     $airInxCoast = getAQIFromPage($htmlData, 'Coast and Central Bay');
-    $airInxEastern = getAQIFromPage($htmlData, 'Eastern District');
+    $airInxEastern = getAQIFromPage($htmlData, 'Eastern Zone');
     $airInxSouth = getAQIFromPage($htmlData, 'South Central Bay');
     $airInxSanta = getAQIFromPage($htmlData, 'Santa Clara Valley');
 
@@ -138,6 +139,11 @@ error_log("-P- Took: " . ($endTime - $startTime) . "ms to return an answer");
 
 
 /* TESTING case
+
+quick unit test
+processMessage("bla-bla-testing");
+exit(0);
+
 $testJSON = '{
   "id": "2ffce933-c055-426f-9ff8-cc43d2d2e291",
   "timestamp": "2017-10-20T04:47:07.129Z",
