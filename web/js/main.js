@@ -93,7 +93,7 @@ function getAQI(zipcode) {
     error_log("(!) Air index for $zone: " . $airInx);
     */
     var inx1 = htmlData.lastIndexOf('South Central Bay');
-    var inx2 = htmlData.indexOf('panel__4', inx1 + 8) + 9;
+    var inx2 = htmlData.indexOf('panel__4', inx1 + 8) + 10;
     var inx3 = htmlData.indexOf('<', inx2);
     var airInx = htmlData.substr(inx2 , (inx3-inx2));
     console.log(" air index: " + airInx);
@@ -132,7 +132,7 @@ function getAQI(zipcode) {
 //
 //
 function getLastUpdate(htmlData) {
-  var inx1 = htmlData.indexOf('class="aq8"') + 12;
+  var inx1 = htmlData.indexOf('Last Updated:') + 13;
   var inx2 = htmlData.indexOf('<', inx1);
   var lastUpdate = htmlData.substr(inx1 , (inx2 - inx1));
   if (lastUpdate.length < 7) {
