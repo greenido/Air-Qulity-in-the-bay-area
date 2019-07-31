@@ -85,13 +85,6 @@ function getAQI(zipcode) {
       $("#last_update").html("<p>Could not fetch info! Sorry.</p>")
       return null;
     }
-    /*
-     $inx2 = strpos($htmlData, 'air-condition-data-panel', $inx1 + 8) + 9;
-    $inx22 = strpos($htmlData, 'panel__4">', $inx2+4) + 10;
-    $inx3 = strpos($htmlData, '<', $inx22);
-    $airInx = substr($htmlData, $inx22, ($inx3 - $inx22));
-    error_log("(!) Air index for $zone: " . $airInx);
-    */
     var inx1 = htmlData.lastIndexOf('South Central Bay');
     var inx2 = htmlData.indexOf('panel__4', inx1 + 8) + 10;
     var inx3 = htmlData.indexOf('<', inx2);
