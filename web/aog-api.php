@@ -55,7 +55,7 @@ function getAQITerm($airInx) {
 //
 function processMessage($update) {
 
-    $htmlPage = "http://sparetheair.org/stay-informed/todays-air-quality/five-day-forecast";
+    $htmlPage = "http://sparetheair.org/";
     $htmlData = file_get_contents($htmlPage);
     //error_log("====\n" . $htmlData . "\n=========\n");
 
@@ -138,9 +138,10 @@ $endTime = time();
 error_log("-P- Took: " . ($endTime - $startTime) . "ms to return an answer");
 
 
+
 /* TESTING case
 
-quick unit test
+//quick unit test
 processMessage("bla-bla-testing");
 exit(0);
 

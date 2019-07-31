@@ -76,7 +76,7 @@ function getZipCode(geoPoint) {
 //
 function getAQI(zipcode) {
   var curDate = getCurDate();
-  var htmlPage = "http://sparetheair.org/stay-informed/todays-air-quality/five-day-forecast";
+  var htmlPage = "http://sparetheair.org";
       
   $.get("proxy.php?url=" + htmlPage, function(data) {
     //console.log("===got from proxy airNow: " + JSON.stringify(data.contents));
