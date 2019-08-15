@@ -12,12 +12,18 @@
  * 
  * @param type $html
  * @param type $zone - e.g. South Central Bay
+ * 
+ * [{"Name":"Northern Zone","MapKey":"Northern","FiveDaysForecastByDays":["67","71","M","G","G"],"MapId":0},
+ * {"Name":"Coast and Central Bay","MapKey":"Coastal and Central Bay","FiveDaysForecastByDays":["46","51","M","G","G"],"MapId":1},
+ * {"Name":"Eastern Zone","MapKey":"Eastern","FiveDaysForecastByDays":["115","118","M","M","M"],"MapId":2},
+ * {"Name":"South Central Bay","MapKey":"South Central","FiveDaysForecastByDays":["51","58","M","G","G"],"MapId":3},{"Name":"Santa Clara Valley","MapKey":"Santa Clara Valley","FiveDaysForecastByDays":["101","108","M","G","G"],"MapId":4}];
+
  */
 function getAQIFromPage($htmlData, $zone) {
     $inx1 = strrpos($htmlData, $zone);
-    $inx2 = strpos($htmlData, 'air-condition-data-panel', $inx1 + 8) + 9;
-    $inx22 = strpos($htmlData, 'panel__4">', $inx2+4) + 10;
-    $inx3 = strpos($htmlData, '<', $inx22);
+    $inx2 = strpos($htmlData, 'FiveDaysForecastByDays', $inx1 + 8) + 9;
+    $inx22 = strpos($htmlData, '["', $inx2+4) + 2 ;
+    $inx3 = strpos($htmlData, '"', $inx22);
     $airInx = substr($htmlData, $inx22, ($inx3 - $inx22));
     error_log("(!) Air index for $zone: " . $airInx);
     if (is_numeric($airInx)) {
@@ -53,7 +59,7 @@ function getAQITerm($airInx) {
 //
 function processMessage($update) {
 
-    $htmlPage = "http://sparetheair.org/";
+    $htmlPage = "http://sparetheair.org/understanding-air-quality/air-quality-forecast";
     $htmlData = file_get_contents($htmlPage);
     //error_log("====\n" . $htmlData . "\n=========\n");
 
@@ -135,13 +141,10 @@ if (isset($update["result"]["action"])) {
 $endTime = time();
 error_log("-P- Took: " . ($endTime - $startTime) . "ms to return an answer");
 
-
-
-/* TESTING case
-
 //quick unit test
-processMessage("bla-bla-testing");
-exit(0);
+// processMessage("bla-bla-testing");
+// exit(0);
+/* TESTING case
 
 $testJSON = '{
   "id": "2ffce933-c055-426f-9ff8-cc43d2d2e291",
