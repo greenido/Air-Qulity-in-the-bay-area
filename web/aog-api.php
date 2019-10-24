@@ -20,7 +20,7 @@
 
  */
 function getAQIFromPage($htmlData, $zone) {
-    $inx1 = strrpos($htmlData, $zone);
+    $inx1 = strpos($htmlData, $zone);
     $inx2 = strpos($htmlData, 'FiveDaysForecastByDays', $inx1 + 8) + 9;
     $inx22 = strpos($htmlData, '["', $inx2+4) + 2 ;
     $inx3 = strpos($htmlData, '"', $inx22);
@@ -59,7 +59,7 @@ function getAQITerm($airInx) {
 //
 function processMessage($update) {
 
-    $htmlPage = "http://sparetheair.org/understanding-air-quality/air-quality-forecast";
+    $htmlPage = "http://sparetheair.org/understanding-air-quality/air-quality-forecast"; //"http://sparetheair.org/understanding-air-quality/air-quality-forecast";
     $htmlData = file_get_contents($htmlPage);
     //error_log("====\n" . $htmlData . "\n=========\n");
 
@@ -122,6 +122,13 @@ function sendMessage($parameters) {
     echo $retObj;
 }
 
+
+//quick unit test
+error_log("\n🐹 Starting the unit test ==\n");
+processMessage("bla-bla-testing");
+exit(0);
+
+
 //
 // Start the party. Get the $_POST data and work with it.
 //
@@ -141,9 +148,6 @@ if (isset($update["result"]["action"])) {
 $endTime = time();
 error_log("-P- Took: " . ($endTime - $startTime) . "ms to return an answer");
 
-//quick unit test
-// processMessage("bla-bla-testing");
-// exit(0);
 /* TESTING case
 
 $testJSON = '{

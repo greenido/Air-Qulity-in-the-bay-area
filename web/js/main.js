@@ -76,7 +76,7 @@ function getZipCode(geoPoint) {
 //
 function getAQI(zipcode) {
   var curDate = getCurDate();
-  var htmlPage = "http://sparetheair.org";
+  var htmlPage = "http://sparetheair.org/understanding-air-quality/air-quality-forecast";
       
   $.get("proxy.php?url=" + htmlPage, function(data) {
     //console.log("===got from proxy airNow: " + JSON.stringify(data.contents));
@@ -85,7 +85,7 @@ function getAQI(zipcode) {
       $("#last_update").html("<p>Could not fetch info! Sorry.</p>")
       return null;
     }
-    var inx1 = htmlData.lastIndexOf('South Central Bay');
+    var inx1 = htmlData.indexOf('South Central Bay'); //lastIndexOf
     var inx2 = htmlData.indexOf('panel__4', inx1 + 8) + 10;
     var inx3 = htmlData.indexOf('<', inx2);
     var airInx = htmlData.substr(inx2 , (inx3-inx2));
