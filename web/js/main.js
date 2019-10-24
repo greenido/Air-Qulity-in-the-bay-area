@@ -85,10 +85,18 @@ function getAQI(zipcode) {
       $("#last_update").html("<p>Could not fetch info! Sorry.</p>")
       return null;
     }
-    var inx1 = htmlData.indexOf('South Central Bay'); //lastIndexOf
-    var inx2 = htmlData.indexOf('panel__4', inx1 + 8) + 10;
-    var inx3 = htmlData.indexOf('<', inx2);
+    var inx1 = htmlData.indexOf('South Central Bay');
+    var inx11 = htmlData.indexOf('FiveDaysForecastByDays', inx1 + 8) + 9;
+    var inx2 = htmlData.indexOf('["', inx11 + 4) + 2;
+    var inx3 = htmlData.indexOf('"', inx2);
     var airInx = htmlData.substr(inx2 , (inx3-inx2));
+
+    /** 
+     *  $inx2 = strpos($htmlData, 'FiveDaysForecastByDays', $inx1 + 8) + 9;
+    $inx22 = strpos($htmlData, '["', $inx2+4) + 2 ;
+    $inx3 = strpos($htmlData, '"', $inx22);
+    $airInx = substr($htmlData, $inx22, ($inx3 - $inx22));
+     */
     console.log(" air index: " + airInx);
     var normalizeVal = 0;
     switch (true) {
