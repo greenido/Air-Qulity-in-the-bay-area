@@ -91,13 +91,7 @@ function getAQI(zipcode) {
     var inx3 = htmlData.indexOf('"', inx2);
     var airInx = htmlData.substr(inx2 , (inx3-inx2));
 
-    /** 
-     *  $inx2 = strpos($htmlData, 'FiveDaysForecastByDays', $inx1 + 8) + 9;
-    $inx22 = strpos($htmlData, '["', $inx2+4) + 2 ;
-    $inx3 = strpos($htmlData, '"', $inx22);
-    $airInx = substr($htmlData, $inx22, ($inx3 - $inx22));
-     */
-    console.log(" air index: " + airInx);
+    console.log("🎩 Air index: " + airInx);
     var normalizeVal = 0;
     switch (true) {
       case (airInx > 0 && airInx <= 50):
