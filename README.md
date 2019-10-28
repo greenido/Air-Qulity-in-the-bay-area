@@ -35,7 +35,21 @@ Please open an inssue in this repo.
 
 -----
 
-![](https://lpa-1.firebaseapp.com/img/lion-hd.jpeg)
+### Books (do not ask why)
+
+* Socratic Dialogues (375 BC) by Plato
+* Nicomachean Ethics (350 BC), Prior and Posterior Analytics (350 BC), Metaphysics (350 BC) by Aristotle
+* Proslogion (1077) by Anselm
+* Novum Organon (1620) by Francis Bacon
+* Discourse on the Method (1635) by Rene Descartes
+* Leviathan (1650) by Thomas Hobbes
+* Ethics (1675) by Baruch Spinoza
+* Essay Concerning Human Understanding (1690) by John Locke
+* Monadology (1720) by Gottfried Leibniz
+* Enquiry Concerning Human Understanding (1750) by David Hume
+* Critique of Pure Reason (1780) by Immanuel Kant
+* Philosophy of Right (1820), Philosophy of Religion (1825) and History of Philosophy (1840) by GWF Hegel
+
 
 ### A lion runs the fastest when he is hungry.
 
