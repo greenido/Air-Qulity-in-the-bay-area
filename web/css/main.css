@@ -6,20 +6,20 @@ body {
 }
 
 .rowwrapper {
-    display: grid;
-    grid-auto-flow: column;  
-   grid-gap: 10px;
+  display: grid;
+  grid-auto-flow: column;  
+  grid-gap: 10px;
   background-color: #fff;
   color: #444;
 }
 
 .box {
-    align-self: center;
-    background-color: #444;
-    color: #fff;
-    border-radius: 5px;
-    padding: 20px;
-    font-size: 150%;
+  align-self: center;
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 150%;
 }
 
 .intro {
