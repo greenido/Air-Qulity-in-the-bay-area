@@ -5,23 +5,6 @@ body {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.rowwrapper {
-  display: grid;
-  grid-auto-flow: column;  
-  grid-gap: 10px;
-  background-color: #fff;
-  color: #444;
-}
-
-.box {
-  align-self: center;
-  background-color: #444;
-  color: #fff;
-  border-radius: 5px;
-  padding: 20px;
-  font-size: 150%;
-}
-
 .intro {
   text-align: center;
   display: block;
@@ -36,7 +19,6 @@ body {
 
 .wrapper {
   text-align: center;
-  margin-top: 2em;
 }
 
 .cta {

@@ -29,41 +29,60 @@ var title = svg.getElementsByClassName("gauge_rating")[0];
 //
 $(document).ready(function() {
   console.log("== start the party");
-  let losAltosData = "https://www.purpleair.com/data.json?show=40757";
-  getPurpleAQI(losAltosData);
+  getPurpleAQI();
+
+  const FIVE_MINUTES = 1000 * 60 * 5;
+  setInterval(function(){
+    getPurpleAQI();
+   }, FIVE_MINUTES);
 });
 
-function getPurpleAQI(dataUrl) {
-  $.get("proxy.php?url=" + dataUrl, function(data) { //"
+function getPurpleAQI() {
+  let losAltosData = "https://www.purpleair.com/data.json?show=40757";
+  $.get("proxy.php?url=" + losAltosData, function(data) {
     let aqiData = JSON.parse(JSON.stringify(data.contents)  );
     //console.log(aqiData);
-    let pmVal = aqiData.data[0][1];
-    let aqiVal = aqiFromPM(pmVal);
-    console.log("🎩 Air index: " + aqiVal);
-    var normalizeVal = 0;
-    switch (true) {
-      case (aqiVal > 0 && aqiVal <= 50):
-          normalizeVal = 0;
-          break;
-      case (aqiVal > 50 && aqiVal <= 100):
-          normalizeVal = 1;
-          break;
-      case (aqiVal > 100 && aqiVal <= 150):
-          normalizeVal = 2;
-          break;
-      case (aqiVal > 150 && aqiVal <= 200):
-          normalizeVal = 3;
-          break;
-      case (aqiVal > 200 ):
-          normalizeVal = 4;
-          break;
-      default:
-          console.log("Could not find a match to airIndex: " + airInx);
-          break;
+    try {
+      if (aqiData.code == 429) {
+        console.log("Rate limit 🧗🏽‍♀️");
+        svg.className = "gauge " + classNames[3].className;
+        title.innerHTML = "<br><small>check below...</small>";  
+        return;
+      }
+      let pmVal = aqiData.data[0][1];
+      let aqiVal = aqiFromPM(pmVal);
+      console.log("🎩 Air index: " + aqiVal + " [ " + new Date() + " ]");
+      var normalizeVal = 0;
+      switch (true) {
+        case (aqiVal > 0 && aqiVal <= 50):
+            normalizeVal = 0;
+            break;
+        case (aqiVal > 50 && aqiVal <= 100):
+            normalizeVal = 1;
+            break;
+        case (aqiVal > 100 && aqiVal <= 150):
+            normalizeVal = 2;
+            break;
+        case (aqiVal > 150 && aqiVal <= 200):
+            normalizeVal = 3;
+            break;
+        case (aqiVal > 200 ):
+            normalizeVal = 4;
+            break;
+        default:
+            console.log("Could not find a match to airIndex: " + airInx);
+            break;
+      }
+      // Update the gauge with the AQI
+      svg.className = "gauge " + classNames[normalizeVal].className;
+      title.innerHTML = classNames[normalizeVal].title + "<br><small>" + aqiVal + "</small>";  
+    } catch (error) {
+      console.log("ERR getting the data:");
+      console.log(error);
+      //svg.className = "gauge " + classNames[3].className;
+      //title.innerHTML = classNames[normalizeVal].title + "<br><small>N/A</small>";  
     }
-    // Update the gauge with the AQI
-    svg.className = "gauge " + classNames[normalizeVal].className;
-    title.innerHTML = classNames[normalizeVal].title + "<br><small>" + aqiVal + "</small>";
+    
 
   });
 
