@@ -25,13 +25,49 @@ var svg = document.getElementsByClassName("gauge")[0];
 var title = svg.getElementsByClassName("gauge_rating")[0];
 
 //
-//
+// Start the party
 //
 $(document).ready(function() {
   console.log("== start the party");
-  //geoLoc();
-  getAQI(94024);
+  let losAltosData = "https://www.purpleair.com/data.json?show=40757";
+  getPurpleAQI(losAltosData);
 });
+
+function getPurpleAQI(dataUrl) {
+  $.get("proxy.php?url=" + dataUrl, function(data) { //"
+    let aqiData = JSON.parse(JSON.stringify(data.contents)  );
+    //console.log(aqiData);
+    let pmVal = aqiData.data[0][1];
+    let aqiVal = aqiFromPM(pmVal);
+    console.log("🎩 Air index: " + aqiVal);
+    var normalizeVal = 0;
+    switch (true) {
+      case (aqiVal > 0 && aqiVal <= 50):
+          normalizeVal = 0;
+          break;
+      case (aqiVal > 50 && aqiVal <= 100):
+          normalizeVal = 1;
+          break;
+      case (aqiVal > 100 && aqiVal <= 150):
+          normalizeVal = 2;
+          break;
+      case (aqiVal > 150 && aqiVal <= 200):
+          normalizeVal = 3;
+          break;
+      case (aqiVal > 200 ):
+          normalizeVal = 4;
+          break;
+      default:
+          console.log("Could not find a match to airIndex: " + airInx);
+          break;
+    }
+    // Update the gauge with the AQI
+    svg.className = "gauge " + classNames[normalizeVal].className;
+    title.innerHTML = classNames[normalizeVal].title + "<br><small>" + aqiVal + "</small>";
+
+  });
+
+}
 
 //
 //
@@ -49,30 +85,7 @@ function geoLoc() {
 }
 
 //
-// TODO check reverse geo: http://maps.googleapis.com/maps/api/geocode/json?latlng=37.344350399999996,-122.06654909999997&sensor=true
-//
-function getZipCode(geoPoint) {
-  let apiUrl =
-    "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-    geoPoint[0] +
-    "," +
-    geoPoint[1] +
-    "&sensor=true&key=AIzaSyCmZBjwB5XzBIO96f5iy8YkDoJ9hrvYSEk";
-  $.getJSON(apiUrl, function(json) {
-    console.log("++++" + json.results[0]);
-    var address = json.results[0].address_components;
-    var zipcode = address[address.length - 2].long_name;
-    console.log(" ---- zipcode: " + zipcode);
-    getAQI(zipcode);
-
-    // var aqi = Math.floor(Math.random() * 4 + 1);
-    // console.log("rand API: " + aqi);
-    
-  });
-}
-
-// TODO:
-// https://www.airnow.gov/index.cfm?action=airnow.local_city&zipcode=94024&submit=Go
+// The old data from sparetheair.org
 //
 function getAQI(zipcode) {
   var curDate = getCurDate();
