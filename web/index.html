@@ -12,12 +12,15 @@
   <!-- Chrome on Android theme -->
   <meta name="theme-color" content="#33076B">
   <link rel="icon" sizes="192x192" href="img/pencil-192.png">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link href="css/main.css" rel="stylesheet">
 
   <title>The Green Air Quality Index</title>
+  </head>
+
   <body>
     <div class="intro">
-      <h1>The Green Air Quality Index</h1>
+      <h1>The Air Quality Index <br>🚴🏼 & 🏄🏼‍♂️ & 🏃🏼‍♂️</h1>
     </div>
     <hr>
     <center><p>South Central Bay</p></center>
@@ -48,6 +51,42 @@
     </div>
     <div id="last_update"></div>
     <hr>
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">  
+            <h3>Los Altos</h3>
+            <div id='PurpleAirWidget_40757_module_AQI_conversion_C0_average_10_layer_standard'>Loading PurpleAir Widget...</div>
+            <script src='https://www.purpleair.com/pa.widget.js?key=ICDUED8VC33EYCSJ&module=AQI&conversion=C0&average=10&layer=standard&container=PurpleAirWidget_40757_module_AQI_conversion_C0_average_10_layer_standard'></script>
+          </div>
+            
+          <div class="col-sm">
+            <h3>Montabelo</h3>
+            <div id='PurpleAirWidget_21423_module_AQI_conversion_C0_average_10_layer_standard'>Loading PurpleAir Widget...</div>
+                <script src='https://www.purpleair.com/pa.widget.js?key=0EZLHTJJ8KM9CMCQ&module=AQI&conversion=C0&average=10&layer=standard&container=PurpleAirWidget_21423_module_AQI_conversion_C0_average_10_layer_standard'></script>
+          </div>
+
+          <div class="col-sm">  
+              <h3>Page Mill</h3>
+              <div id='PurpleAirWidget_37227_module_AQI_conversion_C0_average_10_layer_standard'>Loading PurpleAir Widget...</div>
+              <script src='https://www.purpleair.com/pa.widget.js?key=U1ZC23XCUNA8N60K&module=AQI&conversion=C0&average=10&layer=standard&container=PurpleAirWidget_37227_module_AQI_conversion_C0_average_10_layer_standard'></script>
+          </div>
+          
+          <div class="col-sm">  
+            <h3>Old La Honda</h3>
+            <div id='PurpleAirWidget_19303_module_AQI_conversion_C0_average_10_layer_standard'>Loading PurpleAir Widget...</div>
+                <script src='https://www.purpleair.com/pa.widget.js?key=GCJXVQLL815GPI9L&module=AQI&conversion=C0&average=10&layer=standard&container=PurpleAirWidget_19303_module_AQI_conversion_C0_average_10_layer_standard'></script>
+          </div>
+          
+          <div class="col-sm">  
+                <h3>35 & Kings</h3>
+                <div id='PurpleAirWidget_58995_module_AQI_conversion_C0_average_10_layer_standard'>Loading PurpleAir Widget...</div>
+                    <script src='https://www.purpleair.com/pa.widget.js?key=LV5GY2LR5OZTGKGL&module=AQI&conversion=C0&average=10&layer=standard&container=PurpleAirWidget_58995_module_AQI_conversion_C0_average_10_layer_standard'></script>
+          </div>
+        </div> 
+      </div>
+
+
     <div class="sc-mbox-noimage">
       <h3>What is Air Quality Index?</h3>
       <p>The Air Quality Index, or AQI, is an air quality "thermometer", translates daily air pollution concentrations into
@@ -55,64 +94,53 @@
         0-300 as seen below.</p>
     </div>
 
-    <div class="rci-h">
-      <h5>Good (0-50)</h5>
-    </div>
-    <div class="rci-d">No health impacts are expected when air quality is in this range.</div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div class="rci-h">
+            <h5>Good (0-50)</h5>
+          </div>
+          <div class="rci-d">No health impacts are expected when air quality is in this range.</div>      
+        </div>
 
-    <div class="rci-h">
-      <h5>Moderate (51-100)</h5>
-    </div>
-    <div class="rci-d">Unusually sensitive people should consider limiting prolonged outdoor exertion.</div>
+        <div class="col-sm">
+          <div class="rci-h">
+            <h5>Moderate (51-100)</h5>
+          </div>
+          <div class="rci-d">Unusually sensitive people should consider limiting prolonged outdoor exertion.</div>
+        </div>
 
+        <div class="col-sm">
+          <div class="rci-h">
+            <h5>Unhealthy for Sensitive Groups (101-150)</h5>
+          </div>
+          <div class="rci-d">Active children and adults, and people with respiratory disease, such as asthma, should limit outdoor exertion.
+        </div>
+        </div>
 
-    <div class="rci-h">
-      <h5>Unhealthy for Sensitive Groups (101-150)</h5>
-    </div>
-    <div class="rci-d">Active children and adults, and people with respiratory disease, such as asthma, should limit outdoor exertion.
+        <div class="col-sm">
+          <div class="rci-h">
+            <h5>Unhealthy (151-200)</h5>
+          </div>
+          <div class="rci-d">Active children and adults, and people with respiratory disease, such as asthma, should avoid prolonged outdoor exertion;
+            everyone else, especially children, should limit prolonged outdoor exertion.
+          </div>
+        </div>
 
-      <div class="rci-h">
-        <h5>Unhealthy (151-200)</h5>
-      </div>
-      <div class="rci-d">Active children and adults, and people with respiratory disease, such as asthma, should avoid prolonged outdoor exertion;
-        everyone else, especially children, should limit prolonged outdoor exertion.
-      </div>
-
-      <div class="rci-h">
-        <h5>Very Unhealthy (201-300)</h5>
-      </div>
-      <div class="rci-d">Active children and adults, and people with respiratory disease, such as asthma, should avoid all outdoor exertion;
-        everyone else, especially children, should limit outdoor exertion.
+        <div class="col-sm">
+          <div class="rci-h">
+            <h5>Very Unhealthy (201-300)</h5>
+          </div>
+          <div class="rci-d">Active children and adults, and people with respiratory disease, such as asthma, should avoid all outdoor exertion;
+            everyone else, especially children, should limit outdoor exertion.
+          </div>
+        </div>  
       </div>
       <hr>
-      <p>(!) Data is from <a href="http://sparetheair.org/stay-informed/todays-air-quality/five-day-forecast" target="_blank">sparetheair.org</a></p>
-      
-      <div id="losaltos" class="rowwrapper">
-        <div class="box">
-        <h3>Los Altos</h3>
-        <div id='PurpleAirWidget_40757_module_AQI_conversion_C0_average_10_layer_standard'>Loading PurpleAir Widget...</div>
-        <script src='https://www.purpleair.com/pa.widget.js?key=ICDUED8VC33EYCSJ&module=AQI&conversion=C0&average=10&layer=standard&container=PurpleAirWidget_40757_module_AQI_conversion_C0_average_10_layer_standard'></script>
-        </div>
-        
-         <div class="box">
-          <h3>Page Mill</h3>
-          <div id='PurpleAirWidget_37227_module_AQI_conversion_C0_average_10_layer_standard'>Loading PurpleAir Widget...</div>
-  <script src='https://www.purpleair.com/pa.widget.js?key=U1ZC23XCUNA8N60K&module=AQI&conversion=C0&average=10&layer=standard&container=PurpleAirWidget_37227_module_AQI_conversion_C0_average_10_layer_standard'></script>
-        </div>
-        
-        <div class="box">
-          <h3>Old La Honda</h3>
-          <div id='PurpleAirWidget_19303_module_AQI_conversion_C0_average_10_layer_standard'>Loading PurpleAir Widget...</div>
-              <script src='https://www.purpleair.com/pa.widget.js?key=GCJXVQLL815GPI9L&module=AQI&conversion=C0&average=10&layer=standard&container=PurpleAirWidget_19303_module_AQI_conversion_C0_average_10_layer_standard'></script>
-        </div>
-        
-        <div class="box">
-              <h3>35 & Kings</h3>
-              <div id='PurpleAirWidget_58995_module_AQI_conversion_C0_average_10_layer_standard'>Loading PurpleAir Widget...</div>
-                  <script src='https://www.purpleair.com/pa.widget.js?key=LV5GY2LR5OZTGKGL&module=AQI&conversion=C0&average=10&layer=standard&container=PurpleAirWidget_58995_module_AQI_conversion_C0_average_10_layer_standard'></script>
-        </div>
-        
-      </div>
+      <p>ℹ️ Data From <a href="http://sparetheair.org/stay-informed/todays-air-quality/five-day-forecast" target="_blank">sparetheair.org</a></p>
+    </div>
+
+    
       
   </body>
   <!-- JS -->
