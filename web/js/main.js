@@ -44,9 +44,10 @@ function getPurpleAQI() {
     //console.log(aqiData);
     try {
       if (aqiData.code == 429) {
-        console.log("Rate limit 🧗🏽‍♀️");
-        svg.className = "gauge " + classNames[3].className;
-        title.innerHTML = "<br><small>check below...</small>";  
+        console.log("🧗🏽‍♀️ - " + new Date() + " - Rate limit from purpleAir ");
+        getSpareTheAirAQI();
+        // svg.className = "gauge " + classNames[3].className;
+        // title.innerHTML = "<br><small>check below...</small>";  
         return;
       }
       let pmVal = aqiData.data[0][1];
@@ -79,8 +80,6 @@ function getPurpleAQI() {
     } catch (error) {
       console.log("ERR getting the data:");
       console.log(error);
-      //svg.className = "gauge " + classNames[3].className;
-      //title.innerHTML = classNames[normalizeVal].title + "<br><small>N/A</small>";  
     }
     
 
@@ -106,7 +105,7 @@ function geoLoc() {
 //
 // The old data from sparetheair.org
 //
-function getAQI(zipcode) {
+function getSpareTheAirAQI() {
   var curDate = getCurDate();
   var htmlPage = "http://sparetheair.org/understanding-air-quality/air-quality-forecast";
       
@@ -123,7 +122,7 @@ function getAQI(zipcode) {
     var inx3 = htmlData.indexOf('"', inx2);
     var airInx = htmlData.substr(inx2 , (inx3-inx2));
 
-    console.log("🎩 Air index: " + airInx);
+    console.log("🎩 sparetheair.org AQI: " + airInx);
     var normalizeVal = 0;
     switch (true) {
       case (airInx > 0 && airInx <= 50):
