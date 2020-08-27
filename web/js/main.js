@@ -1,3 +1,16 @@
+//
+// Get the AQI from https://www.purpleair.com/ and/or sparetheair.org
+// So we can decide if it's ok to go for a ride/run
+//
+// @author Ido Green
+// @date 8/2020
+//
+
+let aqiObj = {
+  aqiVal: -1,
+  lastUpdate: -1
+}
+
 var classNames = [
   {
     className: "green",
@@ -28,9 +41,10 @@ var title = svg.getElementsByClassName("gauge_rating")[0];
 // Start the party
 //
 $(document).ready(function() {
-  console.log("== start the party");
+  console.log("🍺 - Start the party");
   getPurpleAQI();
 
+  // let's refresh the data every 5 minutes
   const FIVE_MINUTES = 1000 * 60 * 5;
   setInterval(function(){
     getPurpleAQI();
@@ -42,16 +56,39 @@ function getPurpleAQI() {
   $.get("proxy.php?url=" + losAltosData, function(data) {
     let aqiData = JSON.parse(JSON.stringify(data.contents)  );
     //console.log(aqiData);
+    let curAqiData = null;
     try {
       if (aqiData.code == 429) {
         console.log("🧗🏽‍♀️ - " + new Date() + " - Rate limit from purpleAir ");
-        getSpareTheAirAQI();
-        // svg.className = "gauge " + classNames[3].className;
-        // title.innerHTML = "<br><small>check below...</small>";  
-        return;
+        // let's check if we have some data from the last 15 min
+        const curAqi = window.localStorage.getItem('aqiObj');
+        if (curAqi != null) {
+          
+          curAqiData = JSON.parse(curAqi);
+          let lastUpdate = curAqiData.lastUpdate;
+          let now = new Date().getTime() / 1000;
+          if (now - lastUpdate > (3 * 1000 * 60 * 5)) {
+            // let's not use this data if it's that old (> 15 min)
+            curAqiData = null;
+            title.innerHTML = "<br><small>Check below...</small>";  
+            return;
+          }
+        }
+        else {
+          title.innerHTML = "<br><small>Check below...</small>";  
+          return;
+        }
       }
-      let pmVal = aqiData.data[0][1];
-      let aqiVal = aqiFromPM(pmVal);
+
+      let aqiVal = 0;
+      if (curAqiData) {
+        aqiVal = curAqiData.aqiVal;
+      }
+      else {
+        let pmVal = aqiData.data[0][1];
+        aqiVal = aqiFromPM(pmVal);
+      }
+      
       console.log("🎩 Air index: " + aqiVal + " [ " + new Date() + " ]");
       var normalizeVal = 0;
       switch (true) {
@@ -71,20 +108,25 @@ function getPurpleAQI() {
             normalizeVal = 4;
             break;
         default:
-            console.log("Could not find a match to airIndex: " + airInx);
+            console.log("WARN: Could not find a match to airIndex: " + airInx);
             break;
       }
       // Update the gauge with the AQI
       svg.className = "gauge " + classNames[normalizeVal].className;
       title.innerHTML = classNames[normalizeVal].title + "<br><small>" + aqiVal + "</small>";  
+      saveAqi(aqiVal);
+      
     } catch (error) {
       console.log("ERR getting the data:");
       console.log(error);
     }
-    
-
   });
+}
 
+function saveAqi(aqiVal) {
+  aqiObj.aqiVal = aqiVal;
+  aqiObj.lastUpdate = new Date().getTime() / 1000;
+  window.localStorage.setItem('aqiObj', JSON.stringify(aqiObj));
 }
 
 //
