@@ -52,7 +52,7 @@ $(document).ready(function() {
 });
 
 function getPurpleAQI() {
-  let losAltosData = "https://www.purpleair.com/data.json?show=40757";
+  let losAltosData = "https://www.purpleair.com/data.json?show=53401";     // st. simon church: "40757";
   $.get("proxy.php?url=" + losAltosData, function(data) {
     let aqiData = JSON.parse(JSON.stringify(data.contents)  );
     //console.log(aqiData);
