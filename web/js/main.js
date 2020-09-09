@@ -81,11 +81,17 @@ function getPurpleAQI() {
       }
 
       let aqiVal = 0;
+      let pmVal = 0;
       if (curAqiData) {
         aqiVal = curAqiData.aqiVal;
       }
       else {
-        let pmVal = aqiData.data[0][1];
+        if (aqiData.data != undefined && aqiData.data[0].length > 15) {
+          pmVal = aqiData.data[0][1];
+        }
+        else {
+          pmVal = aqiData.data[1][1];
+        }
         aqiVal = aqiFromPM(pmVal);
       }
       
