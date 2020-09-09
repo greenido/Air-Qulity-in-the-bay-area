@@ -34,8 +34,9 @@ var classNames = [
   }
 ];
 
-var svg = document.getElementsByClassName("gauge")[0];
-var title = svg.getElementsByClassName("gauge_rating")[0];
+let svg = document.getElementsByClassName("gauge")[0];
+let title = svg.getElementsByClassName("gauge_rating")[0];
+let mainTitle = document.getElementById("main_title");
 
 //
 // Start the party
@@ -51,6 +52,30 @@ $(document).ready(function() {
    }, FIVE_MINUTES);
 });
 
+//
+//
+//
+function getAQIFromLocalStorage() {
+  const curAqi = window.localStorage.getItem('aqiObj');
+  if (curAqi != null) {
+    curAqiData = JSON.parse(curAqi);
+    let lastUpdate = curAqiData.lastUpdate;
+    let now = new Date().getTime() / 1000;
+    if (now - lastUpdate > (3 * 1000 * 60 * 5)) {
+      // let's not use this data if it's that old (> 15 min)
+      curAqiData = null;
+      title.innerHTML = "<br><small>Check below...</small>";  
+    }
+    return curAqiData;
+  }
+  else {
+    title.innerHTML = "<br><small>Check below...</small>";  
+  }  
+}
+
+//
+//
+//
 function getPurpleAQI() {
   let losAltosData = "https://www.purpleair.com/data.json?show=53401";     // st. simon church: "40757";
   $.get("proxy.php?url=" + losAltosData, function(data) {
@@ -61,41 +86,37 @@ function getPurpleAQI() {
       if (aqiData.code == 429) {
         console.log("🧗🏽‍♀️ - " + new Date() + " - Rate limit from purpleAir ");
         // let's check if we have some data from the last 15 min
-        const curAqi = window.localStorage.getItem('aqiObj');
-        if (curAqi != null) {
-          
-          curAqiData = JSON.parse(curAqi);
-          let lastUpdate = curAqiData.lastUpdate;
-          let now = new Date().getTime() / 1000;
-          if (now - lastUpdate > (3 * 1000 * 60 * 5)) {
-            // let's not use this data if it's that old (> 15 min)
-            curAqiData = null;
-            title.innerHTML = "<br><small>Check below...</small>";  
-            return;
-          }
-        }
-        else {
-          title.innerHTML = "<br><small>Check below...</small>";  
-          return;
-        }
+        curAqiData = getAQIFromLocalStorage();
       }
 
       let aqiVal = 0;
       let pmVal = 0;
+      let temp = 0;
       if (curAqiData) {
         aqiVal = curAqiData.aqiVal;
       }
       else {
         if (aqiData.data != undefined && aqiData.data[0].length > 15) {
           pmVal = aqiData.data[0][1];
+          temp = aqiData.data[0][20];
+          aqiVal = aqiFromPM(pmVal);
         }
         else {
-          pmVal = aqiData.data[1][1];
+          if (aqiData.data != null) {
+            pmVal = aqiData.data[1][1];
+            temp = aqiData.data[1][20];
+            aqiVal = aqiFromPM(pmVal);
+          }
+          else {
+            curAqiData = getAQIFromLocalStorage();
+            if (curAqiData) {
+              aqiVal = curAqiData.aqiVal;
+            }
+          }
         }
-        aqiVal = aqiFromPM(pmVal);
       }
       
-      console.log("🎩 Air index: " + aqiVal + " [ " + new Date() + " ]");
+      console.log("🎩 Air index: " + aqiVal + " temp: " + temp + "F [ " + new Date() + " ]");
       var normalizeVal = 0;
       switch (true) {
         case (aqiVal > 0 && aqiVal <= 50):
@@ -114,12 +135,16 @@ function getPurpleAQI() {
             normalizeVal = 4;
             break;
         default:
-            console.log("WARN: Could not find a match to airIndex: " + airInx);
+            console.log("WARN: Could not find a match to airIndex: " + aqiVal);
             break;
       }
       // Update the gauge with the AQI
       svg.className = "gauge " + classNames[normalizeVal].className;
       title.innerHTML = classNames[normalizeVal].title + "<br><small>" + aqiVal + "</small>";  
+      if (temp > 0) {
+        mainTitle.innerHTML = "<h4>Los Altos Area - <a href='https://weather.com/weather/today/l/8102dc83928b477ba293d2869dcb04509fd361183c4318177dfa28c32af68af6' target='_blank'>" +
+            temp +  " ºF</a> </h4>";
+      }
       saveAqi(aqiVal);
       
     } catch (error) {
