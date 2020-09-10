@@ -11,7 +11,7 @@ let aqiObj = {
   lastUpdate: -1
 }
 
-var classNames = [
+let classNames = [
   {
     className: "green",
     title: "Good"
@@ -38,11 +38,17 @@ let svg = document.getElementsByClassName("gauge")[0];
 let title = svg.getElementsByClassName("gauge_rating")[0];
 let mainTitle = document.getElementById("main_title");
 
+const app1 = "9af694a540de6120cc63fd";
+const app2 = "7a56d8d331";
+
 //
 // Start the party
 //
 $(document).ready(function() {
   console.log("🍺 - Start the party");
+
+  // TODO: getTemp();
+
   getPurpleAQI();
 
   // let's refresh the data every 5 minutes
@@ -74,6 +80,29 @@ function getAQIFromLocalStorage() {
 }
 
 //
+// Get the current temp from openweathermap.org/data/2.5/weather?zip=94040,us&appid=XXX
+//
+function getTemp() {
+  let tempURL = "https://api.openweathermap.org/data/2.5/weather?zip=94024,us&appid=" + app1 + app2;
+  $.get("proxy.php?url=" + tempURL, function(data) {
+    console.log(data);
+    if (data.contents.cod == 401) {
+      console.log(" 🥺 ERROR with the weather temp data: " + data.contents.message);
+    }
+    else {
+      
+      let description = data.weather.main + " - " + data.weather.description;
+      let tempK = data.main.temp;
+      // Kelvin to F:  (280K − 273.15) × 9/5 + 32 = 44.33°F
+      let tempF = (tempK - 273.15) * 9/5 + 32;
+      console.log("=== 😎 All good with the temp: " + tempF + " desc: " + description);
+      // TODO: update the UI
+    }
+
+  });
+}
+
+//
 //
 //
 function getPurpleAQI() {
@@ -98,13 +127,13 @@ function getPurpleAQI() {
       else {
         if (aqiData.data != undefined && aqiData.data[0].length > 15) {
           pmVal = aqiData.data[0][1];
-          temp = aqiData.data[0][20];
+          temp = aqiData.data[0][20] - 9; // as it's a bit 'too warm'
           aqiVal = aqiFromPM(pmVal);
         }
         else {
           if (aqiData.data != null) {
             pmVal = aqiData.data[1][1];
-            temp = aqiData.data[1][20];
+            temp = aqiData.data[1][20] - 9; // as it's a bit 'too warm'
             aqiVal = aqiFromPM(pmVal);
           }
           else {
@@ -154,6 +183,9 @@ function getPurpleAQI() {
   });
 }
 
+//
+//
+//
 function saveAqi(aqiVal) {
   aqiObj.aqiVal = aqiVal;
   aqiObj.lastUpdate = new Date().getTime() / 1000;
@@ -178,54 +210,54 @@ function geoLoc() {
 //
 // The old data from sparetheair.org
 //
-function getSpareTheAirAQI() {
-  var curDate = getCurDate();
-  var htmlPage = "http://sparetheair.org/understanding-air-quality/air-quality-forecast";
+// function getSpareTheAirAQI() {
+//   var curDate = getCurDate();
+//   var htmlPage = "http://sparetheair.org/understanding-air-quality/air-quality-forecast";
       
-  $.get("proxy.php?url=" + htmlPage, function(data) {
-    //console.log("===got from proxy airNow: " + JSON.stringify(data.contents));
-    var htmlData = data.contents;
-    if (htmlData === undefined || htmlData === null) {
-      $("#last_update").html("<p>Could not fetch info! Sorry.</p>")
-      return null;
-    }
-    var inx1 = htmlData.indexOf('South Central Bay');
-    var inx11 = htmlData.indexOf('FiveDaysForecastByDays', inx1 + 8) + 9;
-    var inx2 = htmlData.indexOf('["', inx11 + 4) + 2;
-    var inx3 = htmlData.indexOf('"', inx2);
-    var airInx = htmlData.substr(inx2 , (inx3-inx2));
+//   $.get("proxy.php?url=" + htmlPage, function(data) {
+//     //console.log("===got from proxy airNow: " + JSON.stringify(data.contents));
+//     var htmlData = data.contents;
+//     if (htmlData === undefined || htmlData === null) {
+//       $("#last_update").html("<p>Could not fetch info! Sorry.</p>")
+//       return null;
+//     }
+//     var inx1 = htmlData.indexOf('South Central Bay');
+//     var inx11 = htmlData.indexOf('FiveDaysForecastByDays', inx1 + 8) + 9;
+//     var inx2 = htmlData.indexOf('["', inx11 + 4) + 2;
+//     var inx3 = htmlData.indexOf('"', inx2);
+//     var airInx = htmlData.substr(inx2 , (inx3-inx2));
 
-    console.log("🎩 sparetheair.org AQI: " + airInx);
-    var normalizeVal = 0;
-    switch (true) {
-      case (airInx > 0 && airInx <= 50):
-          normalizeVal = 0;
-          break;
-      case (airInx > 50 && airInx <= 100):
-          normalizeVal = 1;
-          break;
-      case (airInx > 100 && airInx <= 150):
-          normalizeVal = 2;
-          break;
-      case (airInx > 150 && airInx <= 200):
-          normalizeVal = 3;
-          break;
-      case (airInx > 200 ):
-          normalizeVal = 4;
-          break;
-      default:
-          console.log("Could not find a match to airIndex: " + airInx);
-          break;
-    }
-    // Update the gauge with the AQI
-    svg.className = "gauge " + classNames[normalizeVal].className;
-    title.innerHTML = classNames[normalizeVal].title + "<br><small>" + airInx + "</small>";
+//     console.log("🎩 sparetheair.org AQI: " + airInx);
+//     var normalizeVal = 0;
+//     switch (true) {
+//       case (airInx > 0 && airInx <= 50):
+//           normalizeVal = 0;
+//           break;
+//       case (airInx > 50 && airInx <= 100):
+//           normalizeVal = 1;
+//           break;
+//       case (airInx > 100 && airInx <= 150):
+//           normalizeVal = 2;
+//           break;
+//       case (airInx > 150 && airInx <= 200):
+//           normalizeVal = 3;
+//           break;
+//       case (airInx > 200 ):
+//           normalizeVal = 4;
+//           break;
+//       default:
+//           console.log("Could not find a match to airIndex: " + airInx);
+//           break;
+//     }
+//     // Update the gauge with the AQI
+//     svg.className = "gauge " + classNames[normalizeVal].className;
+//     title.innerHTML = classNames[normalizeVal].title + "<br><small>" + airInx + "</small>";
 
-    // update the last update div
-    var lastUpdate = getLastUpdate(htmlData);
-    $("#last_update").html("<p>Update At " + lastUpdate + "</p>")
-  });
-}
+//     // update the last update div
+//     var lastUpdate = getLastUpdate(htmlData);
+//     $("#last_update").html("<p>Update At " + lastUpdate + "</p>")
+//   });
+// }
 
 //
 //
