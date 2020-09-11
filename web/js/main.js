@@ -38,8 +38,8 @@ let svg = document.getElementsByClassName("gauge")[0];
 let title = svg.getElementsByClassName("gauge_rating")[0];
 let mainTitle = document.getElementById("main_title");
 
-const app1 = "9af694a540de6120cc63fd";
-const app2 = "7a56d8d331";
+const app1 = "9af694a540de6120";
+const app2 = "cc63fd7a56d8d331";
 
 //
 // Start the party
@@ -47,7 +47,7 @@ const app2 = "7a56d8d331";
 $(document).ready(function() {
   console.log("🍺 - Start the party");
 
-  // TODO: getTemp();
+  getTemp();
 
   getPurpleAQI();
 
@@ -83,22 +83,23 @@ function getAQIFromLocalStorage() {
 // Get the current temp from openweathermap.org/data/2.5/weather?zip=94040,us&appid=XXX
 //
 function getTemp() {
-  let tempURL = "https://api.openweathermap.org/data/2.5/weather?zip=94024,us&appid=" + app1 + app2;
-  $.get("proxy.php?url=" + tempURL, function(data) {
+  let tempURL = "http://api.openweathermap.org/data/2.5/weather?zip=94024,us&APPID=" + app1 + app2;
+  $.get(tempURL, function(data) {
     console.log(data);
-    if (data.contents.cod == 401) {
+    if (data.contents != undefined && data.contents.cod == 401) {
       console.log(" 🥺 ERROR with the weather temp data: " + data.contents.message);
     }
-    else {
-      
-      let description = data.weather.main + " - " + data.weather.description;
+    else {  
+      let description = data.weather[0].description; //data.weather[0].main + " & " +
       let tempK = data.main.temp;
       // Kelvin to F:  (280K − 273.15) × 9/5 + 32 = 44.33°F
-      let tempF = (tempK - 273.15) * 9/5 + 32;
+      let tempF = Math.round( (tempK - 273.15) * 9/5 + 32 );
       console.log("=== 😎 All good with the temp: " + tempF + " desc: " + description);
-      // TODO: update the UI
+      if (tempF > 0) {
+        mainTitle.innerHTML = "<h4>Los Altos Area - <a href='https://weather.com/weather/today/l/8102dc83928b477ba293d2869dcb04509fd361183c4318177dfa28c32af68af6' target='_blank'>" +
+            tempF +  " ºF</a> " + description + " </h4>";
+      }
     }
-
   });
 }
 
@@ -120,6 +121,7 @@ function getPurpleAQI() {
 
       let aqiVal = 0;
       let pmVal = 0;
+      // TODO: check if this temp is acurate or not
       let temp = 0;
       if (curAqiData) {
         aqiVal = curAqiData.aqiVal;
@@ -170,10 +172,6 @@ function getPurpleAQI() {
       // Update the gauge with the AQI
       svg.className = "gauge " + classNames[normalizeVal].className;
       title.innerHTML = classNames[normalizeVal].title + "<br><small>" + aqiVal + "</small>";  
-      if (temp > 0) {
-        mainTitle.innerHTML = "<h4>Los Altos Area - <a href='https://weather.com/weather/today/l/8102dc83928b477ba293d2869dcb04509fd361183c4318177dfa28c32af68af6' target='_blank'>" +
-            temp +  " ºF</a> </h4>";
-      }
       saveAqi(aqiVal);
       
     } catch (error) {
