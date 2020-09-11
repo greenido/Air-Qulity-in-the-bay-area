@@ -83,7 +83,7 @@ function getAQIFromLocalStorage() {
 // Get the current temp from openweathermap.org/data/2.5/weather?zip=94040,us&appid=XXX
 //
 function getTemp() {
-  let tempURL = "http://api.openweathermap.org/data/2.5/weather?zip=94024,us&APPID=" + app1 + app2;
+  let tempURL = "https://api.openweathermap.org/data/2.5/weather?zip=94024,us&APPID=" + app1 + app2;
   $.get(tempURL, function(data) {
     console.log(data);
     if (data.contents != undefined && data.contents.cod == 401) {
