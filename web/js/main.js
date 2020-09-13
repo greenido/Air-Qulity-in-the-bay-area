@@ -104,7 +104,7 @@ function getTemp() {
 //
 //
 function getPurpleAQI() {
-  let losAltosData = "https://www.purpleair.com/data.json?show=53401";     // st. simon church: "40757";
+  let losAltosData = "https://www.purpleair.com/data.json?show=53401"; // st. simon church: "40757";
   $.get("proxy.php?url=" + losAltosData, function(data) {
     let aqiData = JSON.parse(JSON.stringify(data.contents)  );
     //console.log(aqiData);
@@ -221,13 +221,6 @@ function getLastUpdate(htmlData) {
 //
 function airNowlogResults(json) {
   console.log("== airnow retJson: " + json);
-}
-
-//
-// TODO: https://weather.weatherbug.com/life/air-quality/94024
-//
-function getAQIweather(zipcode) {
-  console.log("-- in getAQIweather()");
 }
 
 //
