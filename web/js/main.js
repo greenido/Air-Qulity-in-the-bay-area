@@ -91,10 +91,22 @@ function getTemp() {
       let tempK = data.main.temp;
       // Kelvin to F:  (280K − 273.15) × 9/5 + 32 = 44.33°F
       let tempF = Math.round( (tempK - 273.15) * 9/5 + 32 );
-      console.log("=== 😎 The temp: " + tempF + " desc: " + description);
+      let feelsLike = Math.round( (data.main.feels_like - 273.15) * 9/5 + 32 );
+      let humidity = data.main.humidity;
+      let windDirection = data.wind.deg;
+      let windSpeed = data.wind.speed;
+      let htmlDetails = "<ul style='list-style-type:none;'> <li>Feels like: " + feelsLike + "ºF </li>" +
+      "<li>Humidity: " + humidity + "</li>" +
+      "<li>Wind direction: " + windDirection + "</li>" +
+      "<li>Wind Speed: " + windSpeed + "</li>" +
+      "</ul>";
+      console.log("WEATHER 😎 temp: " + tempF + " desc: " + description);
+      console.log("feels: " + feelsLike + " humidity: " + humidity + 
+                  " wind dir: " + windDirection + " windSpeed: " + windSpeed);
       if (tempF > 0) {
         mainTitle.innerHTML = "<h4>Los Altos Area - <a href='https://weather.com/weather/today/l/8102dc83928b477ba293d2869dcb04509fd361183c4318177dfa28c32af68af6' target='_blank'>" +
-            tempF +  " ºF</a> " + description + " </h4>";
+            tempF +  " ºF</a> " + description + " </h4>" + 
+            "<details> <summary>weather details</summary>" + htmlDetails+  " </details>";
       }
     }
   });
@@ -124,13 +136,14 @@ function getPurpleAQI() {
         aqiVal = curAqiData.aqiVal;
       }
       else {
-        if (aqiData.data != undefined && aqiData.data[0].length > 15) {
+        if (aqiData.data != undefined && aqiData.data.length > 0 &&
+            aqiData.data[0].length > 15) {
           pmVal = aqiData.data[0][1];
           temp = aqiData.data[0][20] - 9; // as it's a bit 'too warm'
           aqiVal = aqiFromPM(pmVal);
         }
         else {
-          if (aqiData.data != null) {
+          if (aqiData.data != null && aqiData.data.length > 0) {
             pmVal = aqiData.data[1][1];
             temp = aqiData.data[1][20] - 9; // as it's a bit 'too warm'
             aqiVal = aqiFromPM(pmVal);
@@ -147,7 +160,7 @@ function getPurpleAQI() {
       console.log("🎩 Air index: " + aqiVal + " temp: " + temp + "F [ " + new Date() + " ]");
       var normalizeVal = 0;
       switch (true) {
-        case (aqiVal > 0 && aqiVal <= 50):
+        case (aqiVal >= 0 && aqiVal <= 50):
             normalizeVal = 0;
             break;
         case (aqiVal > 50 && aqiVal <= 100):
