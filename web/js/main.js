@@ -96,11 +96,22 @@ function getTemp() {
       let humidity = data.main.humidity;
       let windDirection = data.wind.deg;
       let windSpeed = data.wind.speed;
+      let rain1h = data.rain
+      //let rain3h = data.rain."3h";
+
       let htmlDetails = "<ul style='list-style-type:none;'> <li>Feels like: " + feelsLike + "ºF </li>" +
       "<li>Humidity: " + humidity + "% </li>" +
       "<li>Wind direction: " + windDirection + " deg</li>" +
-      "<li>Wind Speed: " + windSpeed + " meter/sec</li>" +
-      "</ul>";
+      "<li>Wind Speed: " + windSpeed + " meter/sec</li>";
+
+      if (rain1h) {
+        htmlDetails += "<li>Rain in last hour: " + rain1h + "mm </li>";
+      }
+      // if (rain3h) {
+      //   htmlDetails += "<li>Rain in 3 hours: " + rain3h + "mm </li>";
+      // }
+      htmlDetails += "</ul>";
+      
       console.log("WEATHER 😎 temp: " + tempF + " desc: " + description);
       console.log("feels: " + feelsLike + " humidity: " + humidity + 
                   " wind dir: " + windDirection + " windSpeed: " + windSpeed + "meter/sec");
