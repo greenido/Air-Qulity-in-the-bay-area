@@ -79,6 +79,7 @@ function getAQIFromLocalStorage() {
 
 //
 // Get the current temp from openweathermap.org/data/2.5/weather?zip=94040,us&appid=XXX
+// API doc: https://openweathermap.org/current
 //
 function getTemp() {
   let tempURL = "https://api.openweathermap.org/data/2.5/weather?zip=94024,us&APPID=" + app1 + app2;
@@ -96,13 +97,13 @@ function getTemp() {
       let windDirection = data.wind.deg;
       let windSpeed = data.wind.speed;
       let htmlDetails = "<ul style='list-style-type:none;'> <li>Feels like: " + feelsLike + "ºF </li>" +
-      "<li>Humidity: " + humidity + "</li>" +
-      "<li>Wind direction: " + windDirection + "</li>" +
-      "<li>Wind Speed: " + windSpeed + "</li>" +
+      "<li>Humidity: " + humidity + "% </li>" +
+      "<li>Wind direction: " + windDirection + " deg</li>" +
+      "<li>Wind Speed: " + windSpeed + " meter/sec</li>" +
       "</ul>";
       console.log("WEATHER 😎 temp: " + tempF + " desc: " + description);
       console.log("feels: " + feelsLike + " humidity: " + humidity + 
-                  " wind dir: " + windDirection + " windSpeed: " + windSpeed);
+                  " wind dir: " + windDirection + " windSpeed: " + windSpeed + "meter/sec");
       if (tempF > 0) {
         mainTitle.innerHTML = "<h4>Los Altos Area - <a href='https://weather.com/weather/today/l/8102dc83928b477ba293d2869dcb04509fd361183c4318177dfa28c32af68af6' target='_blank'>" +
             tempF +  " ºF</a> " + description + " </h4>" + 
