@@ -99,10 +99,11 @@ function getTemp() {
       let rain1h = data.rain
       //let rain3h = data.rain."3h";
 
-      let htmlDetails = "<ul style='list-style-type:none;'> <li>Feels like: " + feelsLike + "ºF </li>" +
-      "<li>Humidity: " + humidity + "% </li>" +
-      "<li>Wind direction: " + windDirection + " deg</li>" +
-      "<li>Wind Speed: " + windSpeed + " meter/sec</li>";
+      let htmlDetails = "<ul style='list-style-type:none; text-align: center'> " + 
+                        "<li>🌡 Feels like: " + feelsLike + "ºF </li>" +
+                        "<li>💦 Humidity: " + humidity + "% </li>" +
+                        "<li>💨 Wind direction: " + windDirection + " deg</li>" +
+                        "<li>🍃 Wind Speed: " + windSpeed + " meter/sec</li>";
 
       if (rain1h) {
         htmlDetails += "<li>Rain in last hour: " + rain1h + "mm </li>";
@@ -118,7 +119,7 @@ function getTemp() {
       if (tempF > 0) {
         mainTitle.innerHTML = "<h4>Los Altos Area - <a href='https://weather.com/weather/today/l/8102dc83928b477ba293d2869dcb04509fd361183c4318177dfa28c32af68af6' target='_blank'>" +
             tempF +  " ºF</a> " + description + " </h4>" + 
-            "<details> <summary>weather details</summary>" + htmlDetails+  " </details>";
+            "<details open> <summary>Weather Details</summary>" + htmlDetails+  " </details>";
       }
     }
   });
@@ -128,7 +129,7 @@ function getTemp() {
 //
 //
 function getPurpleAQI() {
-  let losAltosData = "https://www.purpleair.com/data.json?show=53401"; // st. simon church: "40757";
+  let losAltosData = "https://www.purpleair.com/data.json?show=40757"; // st. simon church: "40757";
   $.get("proxy.php?url=" + losAltosData, function(data) {
     let aqiData = JSON.parse(JSON.stringify(data.contents)  );
     //console.log(aqiData);
