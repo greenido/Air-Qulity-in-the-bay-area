@@ -103,7 +103,7 @@ function getTemp() {
                         "<li>🌡 Feels like: " + feelsLike + "ºF </li>" +
                         "<li>💦 Humidity: " + humidity + "% </li>" +
                         "<li>💨 Wind direction: " + windDirection + " deg</li>" +
-                        "<li>🍃 Wind Speed: " + windSpeed + " meter/sec</li>";
+                        "<li>🍃  <a href='https://www.windy.com/?gfs,37.421,-122.111,11' target='_blank'>Wind Speed:</a> " + windSpeed + " meter/sec</li>";
 
       if (rain1h) {
         htmlDetails += "<li>Rain in last hour: " + rain1h + "mm </li>";
