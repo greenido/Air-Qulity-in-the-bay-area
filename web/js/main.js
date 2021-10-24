@@ -96,7 +96,11 @@ function getTemp() {
       let humidity = data.main.humidity;
       let windDirection = data.wind.deg;
       let windSpeed = data.wind.speed;
-      let rain1h = data.rain
+      let rain1h = data.rain;
+      if (data.rain && (data.rain)["1h"]) {
+        rain1h= (data.rain)["1h"];
+      }
+       
       //let rain3h = data.rain."3h";
 
       let htmlDetails = "<ul style='list-style-type:none; text-align: center'> " + 
